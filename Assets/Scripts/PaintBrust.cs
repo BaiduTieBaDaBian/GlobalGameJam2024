@@ -6,10 +6,13 @@ public class PaintBrust : MonoBehaviour
 {
     public Transform TargetObject;
     public Texture2D texture2D;
+    public RawImageData rawImageData;
 
     public Texture2D copyTexture2D;
 
     public RawImage rawImage;
+    public GameObject circleTexture;
+    public Transform parentObject;
 
     private Color[] _colors;
 
@@ -30,6 +33,8 @@ public class PaintBrust : MonoBehaviour
         copyTexture2D = new Texture2D(width, height);
         copyTexture2D.SetPixels(_colors);
         copyTexture2D.Apply();
+        
+        
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
@@ -48,12 +53,14 @@ public class PaintBrust : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            BrushColor(TargetObject.position);
+            //BrushColor(TargetObject.position);
         }
 
         if (Input.GetKey(KeyCode.Space))
         {
-            BrushColor(TargetObject.position);
+            GameObject child= Instantiate(circleTexture, TargetObject.position, Quaternion.identity);
+            child.transform.parent = parentObject;
+            //BrushColor(TargetObject.position);
         }
 
 
@@ -64,7 +71,6 @@ public class PaintBrust : MonoBehaviour
         Vector2 localPos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(rawImage.GetComponent<RectTransform>(), pos, null,
             out localPos);
-        Debug.Log(localPos);
         if (GetComponent<RectTransform>().rect.Contains(localPos))
         {
             int x = (int)(localPos.x*(width/GetComponent<RectTransform>().rect.size.x));
@@ -78,20 +84,13 @@ public class PaintBrust : MonoBehaviour
                     {
                         index = j * width + i;
                         _colors[index] = brushColor;
-                        if (colorArea.Contains(index))
-                        {
-                            colorArea.Remove(index);
-                            if (colorArea.Count < 7000)
-                            {
-                                Debug.Log("上色成功");
-                            }
-                        }
                     }
                 }
             }
             copyTexture2D.SetPixels(_colors);
             copyTexture2D.Apply();
             rawImage.texture = copyTexture2D;
+            rawImageData.copyTexture = copyTexture2D;
         }
 
     }

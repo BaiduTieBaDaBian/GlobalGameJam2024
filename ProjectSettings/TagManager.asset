@@ -12,9 +12,9 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
-  - 
-  - 
+  - Box
+  - Rope
+  - BackGroundUI
   - 
   - 
   - 
@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Box
+    uniqueID: 2041257321
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
